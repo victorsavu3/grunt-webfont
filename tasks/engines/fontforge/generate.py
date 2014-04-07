@@ -21,7 +21,9 @@ f.descent = 64
 if args['normalize']:
 	f.autoWidth(0, 0, 512)
 
-m = hashlib.md5()
+if args['addHashes']:
+	import fontforge
+	m = hashlib.md5()
 cp = args['startCodepoint']
 
 KERNING = 15
@@ -59,7 +61,9 @@ for dirname, dirnames, filenames in os.walk(args['inputDir']):
 				svgfile.write(svgtext)
 				svgfile.close()
 
-			m.update(filename + str(size) + ';')
+			if args['addHashes']:
+				m.update(filename + str(size) + ';')
+
 			if args['addLigatures']:
 				[empty_char(f, c) for c in name]
 				glyph = f.createChar(cp, name)
